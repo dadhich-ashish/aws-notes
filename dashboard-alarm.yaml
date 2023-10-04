@@ -1,0 +1,112 @@
+
+Resources:
+  MyCloudWatchDashboard:
+    Type: AWS::CloudWatch::Dashboard
+    Properties:
+      DashboardName: MyDashboard
+      DashboardBody:
+        !Sub |
+          {
+            "widgets": [
+              {
+                "type": "metric",
+                "x": 0,
+                "y": 0,
+                "width": 12,
+                "height": 6,
+                "properties": {
+                  "metrics": [
+                    [
+                      "AWS/ECS",
+                      "CPUUtilization",
+                      "ClusterName",
+                      "MyClusterName",  // Replace with your ClusterName
+                      "ServiceName",
+                      "MyServiceName"  // Replace with your ServiceName
+                    ],
+                    [
+                      "AWS/CloudWatch",
+                      "Threshold",
+                      "ClusterName",
+                      "MyClusterName",  // Replace with your ClusterName
+                      "ServiceName",
+                      "MyServiceName",  // Replace with your ServiceName
+                      "Label",
+                      "CPUThreshold"  // A custom label for the threshold line
+                    ]
+                  ],
+                  "period": 300,  // Adjust the period as needed
+                  "title": "CPU Utilization",
+                  "view": "timeSeries",
+                  "stacked": false,
+                  "stat": "Average",
+                  "region": "us-east-1",  // Replace with your desired region
+                  "thresholds": [80],  // Set the CPU threshold to 80%
+                  "annotations": {
+                    "horizontal": [
+                      {
+                        "label": "CPU Threshold",
+                        "value": 80,
+                        "color": "#FF0000"
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "metric",
+                "x": 0,
+                "y": 6,
+                "width": 12,
+                "height": 6,
+                "properties": {
+                  "metrics": [
+                    [
+                      "AWS/ECS",
+                      "MemoryUtilization",
+                      "ClusterName",
+                      "MyClusterName",  // Replace with your ClusterName
+                      "ServiceName",
+                      "MyServiceName"  // Replace with your ServiceName
+                    ],
+                    [
+                      "AWS/CloudWatch",
+                      "Threshold",
+                      "ClusterName",
+                      "MyClusterName",  // Replace with your ClusterName
+                      "ServiceName",
+                      "MyServiceName",  // Replace with your ServiceName
+                      "Label",
+                      "MemoryThreshold"  // A custom label for the threshold line
+                    ]
+                  ],
+                  "period": 300,  // Adjust the period as needed
+                  "title": "Memory Utilization",
+                  "view": "timeSeries",
+                  "stacked": false,
+                  "stat": "Average",
+                  "region": "us-east-1",  // Replace with your desired region
+                  "thresholds": [60],  // Set the memory threshold to 60%
+                  "annotations": {
+                    "horizontal": [
+                      {
+                        "label": "Memory Threshold",
+                        "value": 60,
+                        "color": "#FF0000"
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "text",
+                "x": 0,
+                "y": 12,
+                "width": 12,
+                "height": 3,
+                "properties": {
+                  "markdown": "This is a custom text widget. You can add any text or markdown content here."
+                }
+              }
+            ]
+          }

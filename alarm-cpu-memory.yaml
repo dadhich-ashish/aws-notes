@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AWS CloudFormation Stack for CPU and Memory Utilization Alarms
+
+Resources:
+  CPUUtilizationAlarm:
+    Type: 'AWS::CloudWatch::Alarm'
+    Properties:
+      AlarmName: CPUUtilizationAlarm
+      AlarmDescription: Alarm for CPU Utilization
+      MetricName: CPUUtilization
+      Namespace: AWS/EC2
+      Statistic: Average
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 90
+      ComparisonOperator: GreaterThanThreshold
+      AlarmActions:
+        - !Ref SNSTopic  # Replace with your SNS Topic ARN
+
+  MemoryUtilizationAlarm:
+    Type: 'AWS::CloudWatch::Alarm'
+    Properties:
+      AlarmName: MemoryUtilizationAlarm
+      AlarmDescription: Alarm for Memory Utilization
+      MetricName: MemoryUtilization
+      Namespace: System/Linux
+      Statistic: Average
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 90
+      ComparisonOperator: GreaterThanThreshold
+      AlarmActions:
+        - !Ref SNSTopic  # Replace with your SNS Topic ARN
+
+  SNSTopic:
+    Type: 'AWS::SNS::Topic'
+    Properties:
+      DisplayName: CPU and Memory Utilization Alarm
+      TopicName: CPUAndMemoryUtilizationAlarm
+
+Outputs:
+  SNSArn:
+    Description: SNS Topic ARN
+    Value: !Ref SNSTopic

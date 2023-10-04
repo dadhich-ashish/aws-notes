@@ -1,0 +1,23 @@
+Resources:
+  MyCloudWatchMetricFilter:
+    Type: AWS::Logs::MetricFilter
+    Properties:
+      LogGroupName:
+        - !Ref MyCloudWatchLogGroup1
+        - !Ref MyCloudWatchLogGroup2
+      FilterPattern: |
+        {($.message = "*error*" || $.message = "*exception*")}
+      MetricTransformations:
+        - MetricValue: "1"
+          MetricNamespace: "ErrorNotifications"
+          MetricName: "ErrorCount"
+
+  MyCloudWatchLogGroup1:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: "/aws/lambda/my-function-1"
+
+  MyCloudWatchLogGroup2:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: "/aws/lambda/my-function-2"
